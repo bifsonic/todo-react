@@ -1,54 +1,48 @@
 import "./styles.css";
+import Sidebar from "./Sidebar";
+import TaskForm from "./TaskForm";
+import Task from "./Task";
+import { useState } from "react";
+
+function Example(props) {
+  console.log(props);
+  return (
+    <input
+      defaultValue={props.defaultValue}
+      onChange={(event) => props.onChange(event)}
+    />
+  );
+}
 
 export default function App() {
+  const [value, setValue] = useState("");
+  const [tasks, setTasks] = useState([
+    "My First Task !!!!!",
+    "My Second Task!!"
+  ]);
+
+  const changeSearch = (event) => {
+    console.log(event);
+    setValue(event.target.value);
+  };
+
+  const createTask = () => {
+    setTasks([...tasks, value]);
+  };
+
   return (
-    <div class="container">
-      <div class="sidebar">
-        <div>
-          <a class="logo"></a>
-        </div>
-        <div>
-          <a class="inbox"></a>
-        </div>
-        <div>
-          <a class="today"></a>
-        </div>
-      </div>
-      <div class="tasks">
-        <div class="task-form">
-          <textarea class="task-textarea">My task</textarea>
-          <button class="task-create-btn"></button>
-        </div>
-        <div class="task">
-          <div class="content">
-            <input
-              type="radio"
-              class="custom-radio"
-              id="happy"
-              name="happy"
-              value="yes"
-            />
-            <label for="happy"></label>
-            <p class="text">
-              There are many variations of passages of Lorem Ipsum available,
-              but the majority have suffered alteration in some form There are
-              many variations of passages of Lorem Ipsum available, but the
-              majority have suffered alteration in some form There are many
-              variations of passages of Lorem Ipsum available, but the majority
-              have suffered alteration in some form There are many variations of
-              passages of Lorem Ipsum available, but the majority have suffered
-              alteration in some form There are many variations of passages of
-              Lorem Ipsum available, but the majority have suffered alteration
-              in some form There are many variations of passages of Lorem Ipsum
-              available, but the majority have suffered alteration in some form
-            </p>
-          </div>
-          <div class="tags">
-            <button class="tag">Today</button>
-            <button class="tag">Second tag</button>
-            <button class="tag">Third tag</button>
-          </div>
-        </div>
+    <div className="container">
+      <Sidebar />
+      <div className="tasks">
+        <Example
+          defaultValue={value}
+          onChange={(event) => changeSearch(event)}
+        />
+        <div>{value}</div>
+        <TaskForm onSubmit={createTask} />
+        {tasks.map((task) => (
+          <Task text={task} />
+        ))}
       </div>
     </div>
   );
